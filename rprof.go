@@ -217,6 +217,7 @@ func (p *Rprof) Stop() (*proto.Profile, error) {
 	ts := p.startTime
 	samples := p.samples
 
+	p.startTime = 0
 	p.mu.Unlock()
 
 	duration := time.Now().UnixNano() - ts
