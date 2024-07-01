@@ -1,3 +1,5 @@
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/polarsignals/rprof)](https://pkg.go.dev/github.com/polarsignals/rprof)
+
 # rprof
 
 Profiling I/O reads in Go. This in-process profiler for Go profiles the amount, number and size of reads that occur on any `io.Reader`, `io.ReadCloser`, or `io.ReaderAt` implementation.
