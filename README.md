@@ -43,5 +43,5 @@ r := rprof.Reader(reader)
 // Use reader wherever you would normally use the original reader
 
 // Expose on an HTTP endpoint
-http.HandleFunc("/debug/rprof", rprof.Handler())
+http.Handle("/debug/rprof", rprof.Handler())
 ```

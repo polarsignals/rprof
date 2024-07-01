@@ -66,16 +66,19 @@ func (h *ProfHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	buf := bytes.NewBuffer(nil)
 
 	gz := gzip.NewWriter(buf)
-	defer gz.Close()
 
 	if _, err := gz.Write(content); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/x-protobuf")
-	w.Header().Set("Content-Encoding", "gzip")
-	w.Header().Set("Content-Length", strconv.Itoa(buf.Len()))
+	if err := gz.Close(); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/octet-stream")
+	w.Header().Set("Content-Disposition", "attachment; filename=rprof")
 	w.WriteHeader(http.StatusOK)
 	w.Write(buf.Bytes())
 }
