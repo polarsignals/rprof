@@ -158,7 +158,7 @@ func (b *profileBuilder) build(samples map[sampleKey][2]int64) *proto.Profile {
 	for sampleKey, sampleValue := range samples {
 		locs = locs[:0]
 
-		for _, loc := range sampleKey.locations {
+		for _, loc := range sampleKey.locations[:sampleKey.numLocations] {
 			idx, ok := locIdx[loc]
 			if !ok {
 				idx = uint64(len(locIdx)) + 1
