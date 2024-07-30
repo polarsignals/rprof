@@ -176,7 +176,7 @@ func (b *profileBuilder) build(samples map[sampleKey][2]int64) *proto.Profile {
 				b.p.Location = append(b.p.Location, &proto.Location{
 					Id:           idx,
 					MappingIndex: mappingId,
-					Address:      uint64(addr),
+					Address:      addr,
 				})
 			}
 
@@ -192,6 +192,14 @@ func (b *profileBuilder) build(samples map[sampleKey][2]int64) *proto.Profile {
 				Num: 1 << sampleKey.sizeBucketPower,
 			}},
 		})
+	}
+
+	// We do this to signify to the consumer that addresses no longer need to be adjusted.
+	// https://github.com/google/pprof/blob/813a5fbdbec8a66f7a5aedb876e1b2c3ee0f99ac/internal/elfexec/elfexec.go#L218-L223
+	for _, m := range b.p.Mapping {
+		m.MemoryStart = 0
+		m.MemoryLimit = 1 << 63
+		m.FileOffset = 0
 	}
 
 	return b.p
